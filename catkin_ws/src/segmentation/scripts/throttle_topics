@@ -1,0 +1,90 @@
+#!/usr/bin/env python
+
+import rospy
+from std_msgs.msg import Empty
+from sensor_msgs.msg import PointCloud2
+from sensor_msgs.msg import Image
+from arm_msgs.msg import ManipulatorState
+import roslib; roslib.load_manifest('robotiq_2f_gripper_control')
+from robotiq_2f_gripper_control.msg import _Robotiq2FGripper_robot_input  as inputMsg
+
+# last_data = ""
+rgb = None
+depth = None
+pcl = None
+arm_state = None
+gripper = None
+
+started0 = False
+started1 = False
+started2 = False
+started3 = False
+started4 = False
+
+pub0 = rospy.Publisher('/throttle/rgb', Image, queue_size=10)
+pub1 = rospy.Publisher('/throttle/depth', Image,  queue_size=10)
+pub2 = rospy.Publisher('/throttle/pcl', PointCloud2,  queue_size=10)
+pub3 = rospy.Publisher('/throttle/arm_state', ManipulatorState,  queue_size=10)
+pub4 = rospy.Publisher('/throttle/gripper', inputMsg.Robotiq2FGripper_robot_input,  queue_size=10)
+
+def callback_rgb(data):
+    global started0, rgb 
+    rgb = data
+    if (not started0):
+        started0 = True
+
+def callback_depth(data):
+    global started1, depth 
+    depth = data
+    if (not started1):
+        started1 = True
+
+def callback_pcl(data):
+    global started2, pcl 
+    pcl = data
+    if (not started2):
+        started2 = True
+
+def callback_arm(data):
+    global started3, arm_state 
+    arm_state = data
+    if (not started3):
+        started3 = True
+
+def callback_gripper(data):
+    global started4, gripper 
+    gripper = data
+    if (not started4):
+        started4 = True
+
+
+def timer_callback(event):
+    global started0, started1, started2, started3, started4, pub0, pub1, pub2, pub3, pub4, rgb, depth, pcl#, arm_sate, gripper
+    print(started0, started1, started2, started3, started4)
+    if started0 and started1 and started2:# and started3 and started4:
+        pub0.publish(rgb)
+        pub1.publish(depth)
+        pub2.publish(pcl)
+        pub3.publish(arm_state)
+        pub4.publish(gripper)
+        print("Last message published")
+
+
+def listener():
+
+    rospy.init_node('throttle', anonymous=True)
+
+    rospy.Subscriber('/camera/color/image_raw', Image, callback_rgb)
+    rospy.Subscriber('/camera/aligned_depth_to_color/image_raw', Image, callback_depth)
+    rospy.Subscriber('/camera/depth_registered/points', PointCloud2, callback_pcl)
+    rospy.Subscriber('/ur_hardware_interface/arm_state', ManipulatorState, callback_arm)
+    rospy.Subscriber('/Robotiq2FGripperRobotInput', inputMsg.Robotiq2FGripper_robot_input, callback_gripper)
+
+    timer = rospy.Timer(rospy.Duration(0.1), timer_callback)
+
+    rospy.spin()    
+    timer.shutdown()
+
+if __name__ == '__main__':
+    print("Running")
+    listener()

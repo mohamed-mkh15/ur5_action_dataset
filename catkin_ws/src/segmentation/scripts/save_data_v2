@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+# Import modules
+import rospy
+from sensor_msgs.msg import PointCloud2
+from sensor_msgs.msg import Image
+from arm_msgs.msg import ManipulatorState
+import roslib; roslib.load_manifest('robotiq_2f_gripper_control')
+from robotiq_2f_gripper_control.msg import _Robotiq2FGripper_robot_input  as inputMsg
+import rosbag
+
+def callback_rgb(data, bag):
+    # write to bag
+    bag.write('/rgb', data)
+    rospy.loginfo("got rgb")
+
+def callback_depth(data, bag):
+    # write to bag
+    bag.write('/depth', data)
+    rospy.loginfo("got depth")
+
+def callback_pcl(data, bag):
+    # write to bag
+    bag.write('/pcl', data)
+    rospy.loginfo("got pcl")
+
+def callback_arm(data, bag):
+    # write to bag
+    bag.write('arm_state', data)
+    rospy.loginfo("got arm_state")
+
+def callback_gripper(data, bag):
+    # write to bag
+    bag.write('gripper_state', data)
+    rospy.loginfo("got gripper")
+
+def main():
+    bag = rosbag.Bag('RosBagTest1.bag', 'w')
+    rospy.init_node('save_data', anonymous=True)
+    rate = rospy.Rate(10)
+    try:
+        color = rospy.Subscriber('/camera/color/image_raw', Image, callback_rgb, bag)
+        depth = rospy.Subscriber('/camera/aligned_depth_to_color/image_raw', Image, callback_depth, bag)
+        pcl = rospy.Subscriber('/camera/depth_registered/points', PointCloud2, callback_pcl, bag)
+        # arm_state = rospy.Subscriber('/ur_hardware_interface/arm_state', ManipulatorState, callback_arm)
+        # gripper = rospy.Subscriber('/Robotiq2FGripperRobotInput', inputMsg.Robotiq2FGripper_robot_input, callback_gripper)
+        
+        rate.sleep()
+        rospy.loginfo("iteration done")
+        rospy.spin()
+    except KeyboardInterrupt:
+        rospy.loginfo("Shutting down")
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,7 @@
+<launch>
+  <node name="th_rgb" type="throttle" pkg="topic_tools" args="messages /camera/color/image_raw 10 /th_rgb" />
+  <node name="th_depth" type="throttle" pkg="topic_tools" args="messages /camera/aligned_depth_to_color/image_raw 10 /th_depth" />
+  <node name="th_pcl" type="throttle" pkg="topic_tools" args="messages /camera/depth_registered/points 10 /th_pcl" />
+  <!-- <node name="th_arm" type="throttle" pkg="topic_tools" args="messages /ur_hardware_interface/arm_state 10 /th_arm_state" />
+  <node name="th_gripper" type="throttle" pkg="topic_tools" args="messages /Robotiq2FGripperRobotInput 10 /th_gripper" /> -->
+</launch>

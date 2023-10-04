@@ -1,0 +1,11 @@
+<launch>
+
+  <include file="$(find realsense2_camera)/launch/rs_rgbd.launch"/>
+  <include file="$(find ur_robot_driver)/launch/ur5_bringup.launch">
+    <arg name="robot_ip" value="192.168.88.206"/>
+  </include>
+
+  <node name="Robotiq2FGripperRtuNode" type="Robotiq2FGripperRtuNode" pkg="robotiq_2f_gripper_control" args="/dev/ttyUSB0" />
+  <node name="throttle_topics" type="throttle_topics" pkg="segmentation" />
+</launch>
+
