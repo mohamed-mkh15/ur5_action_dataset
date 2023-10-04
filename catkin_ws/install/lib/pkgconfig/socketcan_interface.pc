@@ -1,0 +1,8 @@
+prefix=/home/mkh15/catkin_ws/install
+
+Name: socketcan_interface
+Description: Description of socketcan_interface
+Version: 0.8.0
+Cflags: -I${prefix}/include -I/usr/include
+Libs: -L${prefix}/lib -lsocketcan_interface_string /usr/lib/x86_64-linux-gnu/libboost_chrono.so /usr/lib/x86_64-linux-gnu/libboost_system.so /usr/lib/x86_64-linux-gnu/libboost_thread.so /usr/lib/x86_64-linux-gnu/libboost_date_time.so /usr/lib/x86_64-linux-gnu/libboost_atomic.so /usr/lib/x86_64-linux-gnu/libpthread.so
+Requires: 

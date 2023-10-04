@@ -1,0 +1,8 @@
+prefix=/home/mkh15/catkin_ws/devel
+
+Name: logging_tools
+Description: Description of logging_tools
+Version: 0.0.1
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: rospy std_msgs message_runtime

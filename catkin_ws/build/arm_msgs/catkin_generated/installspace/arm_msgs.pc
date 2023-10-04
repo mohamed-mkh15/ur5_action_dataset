@@ -1,0 +1,8 @@
+prefix=/home/mkh15/catkin_ws/install
+
+Name: arm_msgs
+Description: Description of arm_msgs
+Version: 0.0.1
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: rospy std_msgs message_runtime

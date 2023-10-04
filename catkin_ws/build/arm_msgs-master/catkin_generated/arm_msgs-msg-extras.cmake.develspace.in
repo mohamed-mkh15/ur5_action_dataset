@@ -1,0 +1,2 @@
+set(arm_msgs_MESSAGE_FILES "/home/mkh15/catkin_ws/src/arm_msgs-master/msg/ManipulatorState.msg;/home/mkh15/catkin_ws/src/arm_msgs-master/msg/GripperState.msg;/home/mkh15/catkin_ws/src/arm_msgs-master/msg/LegState.msg")
+set(arm_msgs_SERVICE_FILES "")

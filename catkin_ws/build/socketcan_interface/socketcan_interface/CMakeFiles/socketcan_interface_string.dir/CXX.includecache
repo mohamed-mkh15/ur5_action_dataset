@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mkh15/catkin_ws/src/socketcan_interface/socketcan_interface/include/socketcan_interface/FastDelegate.h
+memory.h
+-
+
+/home/mkh15/catkin_ws/src/socketcan_interface/socketcan_interface/include/socketcan_interface/filter.h
+vector
+-
+interface.h
+/home/mkh15/catkin_ws/src/socketcan_interface/socketcan_interface/include/socketcan_interface/interface.h
+
+/home/mkh15/catkin_ws/src/socketcan_interface/socketcan_interface/include/socketcan_interface/interface.h
+array
+-
+memory
+-
+boost/system/error_code.hpp
+-
+FastDelegate.h
+/home/mkh15/catkin_ws/src/socketcan_interface/socketcan_interface/include/socketcan_interface/FastDelegate.h
+iostream
+-
+boost/thread/mutex.hpp
+-
+
+/home/mkh15/catkin_ws/src/socketcan_interface/socketcan_interface/include/socketcan_interface/string.h
+interface.h
+/home/mkh15/catkin_ws/src/socketcan_interface/socketcan_interface/include/socketcan_interface/interface.h
+filter.h
+/home/mkh15/catkin_ws/src/socketcan_interface/socketcan_interface/include/socketcan_interface/filter.h
+sstream
+-
+
+/home/mkh15/catkin_ws/src/socketcan_interface/socketcan_interface/src/string.cpp
+socketcan_interface/string.h
+-
+
