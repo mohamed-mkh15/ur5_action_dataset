@@ -1,0 +1,116 @@
+version: '3.8'
+
+networks:
+  backend_net:
+    driver: bridge
+
+volumes:
+  cache:
+    driver: local
+  data:
+    driver: local
+
+services:
+  mongo_db:
+    image: mongo:4.4.6
+    container_name: mongo_db
+    restart: always
+    networks:
+      - backend_net 
+    expose:
+      - 27018
+      - 27019
+    ports:
+      - 27017:27017
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+      - data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: logger_db
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+
+  mongo_express:
+    image: mongo-express:0.54.0
+    container_name: mongo_express
+    depends_on:
+      - mongo_db
+    restart: always
+    networks:
+      - backend_net
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      ME_CONFIG_MONGODB_SERVER: mongo_db
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspace
+    container_name: backend
+    networks:
+      - backend_net
+    ports:
+      - 8012:8012
+    entrypoint: 
+      - "/workspace/backend/backend.py"
+    env_file:
+      - .env
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "10"
+
+  gui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspace
+    env_file:
+      - x11.env
+      - .env
+    container_name: gui
+    network_mode: "host"
+    entrypoint: 
+      - "/workspace/main.py"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "10"
+    restart: on-failure
+
+  rosbag_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspace
+      - cache:/root/.cache
+      - ${SAVED_ROS_BAGS_PATH}:/root/saved_rosbags
+    env_file:
+      - .env
+    container_name: rosbag
+    network_mode: "host"
+    entrypoint: 
+      - /bin/bash
+    command: 
+      - -c
+      - |
+        source /opt/ros/noetic/setup.bash
+        python3 /workspace/alpaca_logging_tools/scripts/rosbag_log_service.py
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "10"
+
+    
