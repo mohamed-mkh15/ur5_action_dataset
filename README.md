@@ -43,5 +43,10 @@ $rosrun robotiq_2f_gripper_control Robotiq2FGripperSimpleController.py
 run driver node (UR5)
 $roslaunch ur_robot_driver ur5_bringup.launch robot_ip:=192.168.88.206 #check ur robot ip
 
+### 4- Throttle
+I added another node that throttles the topics I need to a lower frequency as the saved rosbag files were too big for me. 
+$rosrun segmentation throttle_topics.py
+
 
 ### 4- or you can just lunch all of them at once from the drivers.launch in segmentation pkg.
+$roslaunch segmentation drivers.launch
