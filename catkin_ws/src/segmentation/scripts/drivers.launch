@@ -1,0 +1,18 @@
+<launch>
+
+  <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
+    <!-- <arg name= "color_width" value="848"/>
+    <arg name= "color_height" value="480"/> -->
+    
+    <arg name= "color_width" value="1280"/> 
+    <arg name= "color_height" value="720"/>
+  </include>
+
+  <include file="$(find ur_robot_driver)/launch/ur5_bringup.launch">
+    <arg name="robot_ip" value="192.168.88.39"/>
+  </include>
+
+  <!-- <node name="Robotiq2FGripperRtuNode" type="Robotiq2FGripperRtuNode.py" pkg="robotiq_2f_gripper_control" args="/dev/ttyUSB0" /> -->
+  <!-- <node name="throttle_topics" type="throttle_topics" pkg="segmentation" /> -->
+</launch>
+
